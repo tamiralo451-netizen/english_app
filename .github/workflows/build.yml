@@ -12,10 +12,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
 
       - name: Install system dependencies
         run: |
@@ -31,8 +31,14 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install buildozer==1.5.0 cython==0.29.34
 
+      - name: Verify Python
+        run: |
+          python --version
+          python -c "import sys; print(sys.executable)"
+
       - name: Build APK
         run: |
+          buildozer android clean
           buildozer android debug
 
       - name: Upload APK
