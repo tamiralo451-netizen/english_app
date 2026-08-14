@@ -12,7 +12,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install dependencies
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -20,15 +25,11 @@ jobs:
             autoconf automake libtool pkg-config zlib1g-dev \
             libncurses5-dev libncursesw5-dev cmake libffi-dev \
             libssl-dev
-          
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+
       - name: Install Buildozer
         run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install buildozer==1.5.0 python-for-android==2024.1.21 cython==0.29.34
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install buildozer==1.5.0 cython==0.29.34
 
       - name: Build APK
         run: |
